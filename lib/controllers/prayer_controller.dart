@@ -1,12 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salah_mate/controllers/supabase_client.dart';
 import 'package:salah_mate/models/faraidh_units.dart';
 import '../models/prayer_types.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PrayersNotifier extends ChangeNotifier {
-  SupabaseClient client = Supabase.instance.client;
-  bool _isFetched = false;
   Map prayers = {
     "fajr": {
       "fardh": Fardh,
@@ -32,7 +30,6 @@ class PrayersNotifier extends ChangeNotifier {
   };
 
   Future<void> fetchPrayers(String date) async {
-    _isFetched ? clear() : null;
     List faraidh = (await client.from("faraidh").select("*").eq("date", date));
     List sunnahs = (await client.from("sunnahs").select("*").eq("date", date));
     Map witrData = (await client.from("witr").select("*").eq("date", date))[0];
@@ -65,8 +62,6 @@ class PrayersNotifier extends ChangeNotifier {
     prayers["isha"]["witr"] = Witr(witrData["id"], witrData["name"],
         witrData["date"], 3, witrData["time"], witrData["has_prayed"]);
     debugPrint(prayers.toString());
-
-    _isFetched = true;
   }
 
   Future<void> syncStatus(Prayer prayer, String table) async {

@@ -15,6 +15,12 @@ class PrayersDueInTimePage extends ConsumerStatefulWidget {
 
 class _PrayersDueInTimePageState extends ConsumerState<PrayersDueInTimePage> {
   @override
+  void deactivate() {
+    ref.read(prayersProvider.notifier).clear();
+    super.deactivate();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var prayers = ref.watch(prayersProvider).prayers;
     return Scaffold(
