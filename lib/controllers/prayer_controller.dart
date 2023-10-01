@@ -42,7 +42,8 @@ class PrayersNotifier extends ChangeNotifier {
           fardhData["date"],
           FaraidhUnits.units[fardhData["name"]],
           fardhData["time"],
-          fardhData["has_prayed"]);
+          fardhData["has_prayed"],
+          fardhData["with_jamaah"]);
       prayers[fardh.name]["fardh"] = fardh;
     }
 
@@ -64,10 +65,15 @@ class PrayersNotifier extends ChangeNotifier {
     debugPrint(prayers.toString());
   }
 
-  Future<void> syncStatus(Prayer prayer, String table) async {
+  Future<void> syncStatus(var prayer, String table) async {
     await client
         .from(table)
         .update({"has_prayed": prayer.status}).eq("id", prayer.id);
+    if (prayer.runtimeType == Fardh) {
+      await client
+          .from(table)
+          .update({"with_jamaah": prayer.withJamaah}).eq("id", prayer.id);
+    }
   }
 
   void clear() {

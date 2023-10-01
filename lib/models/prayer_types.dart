@@ -6,11 +6,19 @@ class Prayer {
   bool status;
   final int units;
 
-  Prayer(this.id, this.name, this.date, this.units, this.time, this.status);
+  Prayer(
+    this.id,
+    this.name,
+    this.date,
+    this.units,
+    this.time,
+    this.status,
+  );
 }
 
 class Fardh extends Prayer {
-  Fardh(id, name, date, units, time, status)
+  bool withJamaah = false;
+  Fardh(id, name, date, units, time, status, this.withJamaah)
       : super(id, name, date, units, time, status);
 }
 

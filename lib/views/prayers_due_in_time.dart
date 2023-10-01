@@ -48,15 +48,43 @@ class _PrayersDueInTimePageState extends ConsumerState<PrayersDueInTimePage> {
                       leading: StatefulBuilder(
                         builder: (BuildContext context,
                             void Function(void Function()) setFardhState) {
-                          return Checkbox(
-                            onChanged: (value) {
-                              fardh.status = !fardh.status;
-                              ref
-                                  .read(prayersProvider.notifier)
-                                  .syncStatus(fardh, "faraidh");
-                              setFardhState(() {});
-                            },
-                            value: fardh.status,
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Tooltip(
+                                message: "At Home",
+                                child: Checkbox(
+                                  onChanged: (value) {
+                                    fardh.status = !fardh.status;
+                                    ref
+                                        .read(prayersProvider.notifier)
+                                        .syncStatus(fardh, "faraidh");
+                                    setFardhState(() {});
+                                  },
+                                  value: fardh.status,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Transform.scale(
+                                scale: 1.5,
+                                child: Tooltip(
+                                  message: "At the Masjid",
+                                  child: Checkbox(
+                                    activeColor: Colors.green[300],
+                                    onChanged: (value) {
+                                      fardh.withJamaah = !fardh.withJamaah;
+                                      ref
+                                          .read(prayersProvider.notifier)
+                                          .syncStatus(fardh, "faraidh");
+                                      setFardhState(() {});
+                                    },
+                                    value: fardh.withJamaah,
+                                  ),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ),
