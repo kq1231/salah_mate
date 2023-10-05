@@ -90,6 +90,7 @@ class _PrayersDueInTimePageState extends ConsumerState<PrayersDueInTimePage> {
                       ),
                       children: [
                         ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, sunnahIndex) {
                             Sunnah sunnah = sunnahs[sunnahIndex];
                             return SubPrayerListTile(

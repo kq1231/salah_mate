@@ -15,9 +15,10 @@ class DatesPage extends ConsumerWidget {
       future: ref.watch(datesProvider).fetchDates(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return Column(
+          return ListView(
             children: [
               ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Padding(
