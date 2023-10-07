@@ -102,6 +102,7 @@ class PrayersNotifier extends ChangeNotifier {
   }
 }
 
-final prayersProvider = ChangeNotifierProvider<PrayersNotifier>((ref) {
+final prayersProvider =
+    ChangeNotifierProvider.autoDispose<PrayersNotifier>((ref) {
   return PrayersNotifier();
 });

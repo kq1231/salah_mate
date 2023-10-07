@@ -21,6 +21,13 @@ class _PrayersDueInTimePageState extends ConsumerState<PrayersDueInTimePage> {
   }
 
   @override
+  void dispose() {
+    print("DISPOSED");
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var prayers = ref.watch(prayersProvider).prayers;
     return Scaffold(
