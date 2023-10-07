@@ -15,82 +15,79 @@ class DatesPage extends ConsumerWidget {
       future: ref.watch(datesProvider).fetchDates(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return ListView(
-            children: [
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ListTile(
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          ref
-                              .read(datesProvider.notifier)
-                              .deleteDate(dates[index]);
-                        },
+          return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Center(
+                      child: Container(
+                        padding: const EdgeInsets.all(30),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: TextButton(
+                          child: Text(
+                            "Select the date",
+                            style: dTextTitleStyle100,
+                          ),
+                          onPressed: () async {
+                            await _selectDate(context, ref);
+                            await Future.delayed(Duration.zero, () {
+                              Navigator.pop(context);
+                            });
+                          },
+                        ),
                       ),
-                      title: GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return PrayersDueInTimePage(
-                                date: dates[index],
-                              );
-                            },
-                          ));
-                        },
-                        child: Text(
-                          dates[index],
-                          style: GoogleFonts.roboto(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                    );
+                  },
+                );
+              },
+              child: const Icon(Icons.add),
+            ),
+            body: ListView(
+              children: [
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: ListTile(
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            ref
+                                .read(datesProvider.notifier)
+                                .deleteDate(dates[index]);
+                          },
+                        ),
+                        title: GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return PrayersDueInTimePage(
+                                  date: dates[index],
+                                );
+                              },
+                            ));
+                          },
+                          child: Text(
+                            dates[index],
+                            style: GoogleFonts.roboto(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                itemCount: dates.length,
-              ),
-              Expanded(child: Container()),
-              Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  FloatingActionButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Center(
-                              child: Container(
-                                padding: const EdgeInsets.all(30),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: TextButton(
-                                  child: Text(
-                                    "Select the date",
-                                    style: dTextTitleStyle100,
-                                  ),
-                                  onPressed: () async {
-                                    await _selectDate(context, ref);
-                                    await Future.delayed(Duration.zero, () {
-                                      Navigator.pop(context);
-                                    });
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: const Icon(Icons.add)),
-                ]),
-              ),
-            ],
+                    );
+                  },
+                  itemCount: dates.length,
+                ),
+              ],
+            ),
           );
         } else {
           return const Center(child: CircularProgressIndicator());
