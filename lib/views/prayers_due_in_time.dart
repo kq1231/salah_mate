@@ -121,7 +121,7 @@ class _PrayersDueInTimePageState extends ConsumerState<PrayersDueInTimePage> {
                   child: Transform.scale(
                 scale: 3,
                 child: const CircularProgressIndicator(
-                  strokeWidth: 7,
+                  strokeWidth: 0.7,
                   backgroundColor: Colors.red,
                   color: Colors.amberAccent,
                 ),

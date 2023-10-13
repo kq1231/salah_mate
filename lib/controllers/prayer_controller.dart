@@ -30,9 +30,14 @@ class PrayersNotifier extends ChangeNotifier {
   };
 
   Future<void> fetchPrayers(String date) async {
-    List faraidh = (await client.from("faraidh").select("*").eq("date", date));
-    List sunnahs = (await client.from("sunnahs").select("*").eq("date", date));
-    Map witrData = (await client.from("witr").select("*").eq("date", date))[0];
+    List _0 = await Future.wait([
+      client.from("faraidh").select("*").eq("date", date),
+      client.from("sunnahs").select("*").eq("date", date),
+      client.from("witr").select("*").eq("date", date)
+    ]);
+    List faraidh = _0[0];
+    List sunnahs = _0[1];
+    Map witrData = _0[2][0];
 
     // Add faraidh
     for (Map fardhData in faraidh) {
